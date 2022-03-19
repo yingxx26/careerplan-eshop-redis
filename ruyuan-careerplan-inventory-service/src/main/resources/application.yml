@@ -1,0 +1,65 @@
+spring:
+  application:
+    name: ruyuan-careerplan-inventory
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://47.102.157.169:3306/ruyuan-eshop-construction?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://rm-uf6082n8164e8qr54jo.mysql.rds.aliyuncs.com:3306/careerplan_eshop_redis?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root_careerplan
+    password: Careerplan123
+  cloud:
+    nacos:
+      discovery:
+        #server-addr: 47.102.157.169:8848
+        server-addr: 127.0.0.1:8848
+        username: nacos
+        password: nacos
+
+  redis:
+#    host: 47.102.157.169
+    host: 127.0.0.1
+    port: 6379
+    password: root
+    timeout: 3000
+
+ruyuan:
+  jedis:
+    maxTotal: 10
+    maxIdle: 10
+    minIdle: 1
+    password: root
+    redisAddrs:
+      - 127.0.0.1:6380
+      - 127.0.0.1:6381
+      - 127.0.0.1:6382
+
+server:
+  port: 8016
+
+dubbo:
+  scan:
+    base-packages: com.ruyuan.careerplan.inventory.api
+  registry:
+    address: spring-cloud://localhost
+  protocol:
+    name: dubbo
+    port: 28095
+  consumer:
+    check: false
+  provider:
+    threads: 800
+    actives: 200
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+
+
+rocketmq:
+  name-server: 127.0.0.1:9876
+

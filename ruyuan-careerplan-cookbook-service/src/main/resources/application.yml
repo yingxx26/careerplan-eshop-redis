@@ -1,0 +1,84 @@
+spring:
+  application:
+    name: ruyuan-careerplan-cookbook
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    url: jdbc:mysql://47.102.157.169:3306/ruyuan-eshop-construction?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/ruyuan?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  cloud:
+    nacos:
+      discovery:
+        #server-addr: 47.102.157.169:8848
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+
+  redis:
+    #    host: 47.102.157.169
+    host: localhost
+    port: 6379
+    password: 123456
+    timeout: 3000
+
+server:
+  port: 8015
+
+dubbo:
+  scan:
+    base-packages: com.ruyuan.careerplan.cookbook.api
+  registry:
+    address: spring-cloud://localhost
+  protocol:
+    name: dubbo
+    port: 28095
+  consumer:
+    check: false
+  provider:
+    threads: 800
+    actives: 200
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+
+
+rocketmq:
+  name-server: localhost:9876
+
+# hotkey 相关配置
+hotkey:
+  app-name: careerplan-redis
+#  etcd服务器地址，集群用逗号分隔
+  etcd-server: http://192.168.3.97:2379
+#  设置本地缓存最大数量，默认5万
+  caffeine-size: 50000
+#  批量推送key的间隔时间，默认500ms，该值越小，上报热key越频繁，相应越及时，建议根据实际情况调整
+#  如单机每秒qps10个，那么0.5秒上报一次即可，否则是空跑。该值最小为1，即1ms上报一次。
+  push-period: 1
+
+# 限流相关配置
+limiter:
+#  动态加载时，各个接口限流配置存放路径
+  propertiesPath: /app/propertie/limiter.properties
+#  redis宕机之后限流QPS
+  noRedisLimiter: 20
+#  默认的限流QPS
+  defaultLimiter: 200
+
+
+# 本地缓存，与hotkey不同，这里是降级时使用的缓存
+localCache:
+#  过期时间
+  expireSeconds: 60
+#  初始的缓存空间大小
+  initialCapacity: 128
+#  缓存的最大条数
+  maxSize: 5000

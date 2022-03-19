@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruyuan.careerplan.social.mapper.SocialMasterMapper">
+
+	<!--通用应用节运行时数据表映射-->
+	<resultMap id="BaseResultMap" type="com.ruyuan.careerplan.social.domain.entity.SocialMasterDO" >
+		<id property="id" column="id" jdbcType="BIGINT" />
+		<result property="cookbookId" column="cookbook_id" jdbcType="VARCHAR" />
+		<result property="creatorId" column="creator_id" jdbcType="BIGINT" />
+		<result property="masterAvatar" column="master_avatar" jdbcType="VARCHAR" />
+		<result property="masterNickname" column="master_nickname" jdbcType="VARCHAR" />
+		<result property="startTime" column="start_time" jdbcType="TIMESTAMP" />
+		<result property="endTime" column="end_time" jdbcType="TIMESTAMP" />
+		<result property="totalAmount" column="total_amount" jdbcType="INTEGER" />
+		<result property="helpAmount" column="help_amount" jdbcType="INTEGER" />
+		<result property="helpStatus" column="help_status" jdbcType="INTEGER" />
+		<result property="masterConfig" column="master_config" jdbcType="VARCHAR" />
+		<result property="delFlag" column="del_flag" jdbcType="INTEGER" />
+		<result property="createUser" column="create_user" jdbcType="VARCHAR" />
+		<result property="updateUser" column="update_user" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+
+	<!-- 通用查询结果集合-->
+	<sql id="Base_Column_List">
+		id,cookbook_id,creator_id,master_avatar,master_nickname,start_time,end_time,total_amount,help_amount,help_status,master_config,del_flag,create_user,update_user,create_time,update_time
+	</sql>
+
+
+	<sql id="conditions">
+		<if test="id != null and id != ''"> and id =#{id,jdbcType=BIGINT}</if>
+		<if test="cookbookId != null and cookbookId != ''"> and cookbook_id =#{cookbookId,jdbcType=VARCHAR}</if>
+		<if test="creatorId != null"> and creator_id =#{creatorId,jdbcType=BIGINT}</if>
+		<if test="masterAvatar != null and masterAvatar != ''"> and master_avatar =#{masterAvatar,jdbcType=VARCHAR}</if>
+		<if test="masterNickname != null and masterNickname != ''"> and master_nickname =#{masterNickname,jdbcType=VARCHAR}</if>
+		<if test="startTime != null and startTime != ''"> and start_time =#{startTime,jdbcType=TIMESTAMP}</if>
+		<if test="endTime != null and endTime != ''"> and end_time =#{endTime,jdbcType=TIMESTAMP}</if>
+		<if test="totalAmount != null"> and total_amount =#{totalAmount,jdbcType=INTEGER}</if>
+		<if test="helpAmount != null"> and help_amount =#{helpAmount,jdbcType=INTEGER}</if>
+		<if test="helpStatus != null"> and help_status =#{helpStatus,jdbcType=INTEGER}</if>
+		<if test="masterConfig != null and masterConfig != ''"> and master_config =#{masterConfig,jdbcType=VARCHAR}</if>
+		<if test="delFlag != null"> and del_flag =#{delFlag,jdbcType=INTEGER}</if>
+		<if test="createUser != null and createUser != ''"> and create_user =#{createUser,jdbcType=VARCHAR}</if>
+		<if test="updateUser != null and updateUser != ''"> and update_user =#{updateUser,jdbcType=VARCHAR}</if>
+		<if test="createTime != null and createTime != ''"> and create_time =#{createTime,jdbcType=TIMESTAMP}</if>
+		<if test="updateTime != null and updateTime != ''"> and update_time =#{updateTime,jdbcType=TIMESTAMP}</if>
+	</sql>
+
+	<!-- 添加 -->
+	<insert id="insertSocialMaster" useGeneratedKeys="true" keyProperty="id" parameterType="com.ruyuan.careerplan.social.domain.entity.SocialMasterDO">
+		INSERT INTO social_master
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null"> id,</if>
+			<if test="cookbookId != null"> cookbook_id,</if>
+			<if test="creatorId != null"> creator_id,</if>
+			<if test="masterAvatar != null"> master_avatar,</if>
+			<if test="masterNickname != null"> master_nickname,</if>
+			<if test="startTime != null"> start_time,</if>
+			<if test="endTime != null"> end_time,</if>
+			<if test="totalAmount != null"> total_amount,</if>
+			<if test="helpAmount != null"> help_amount,</if>
+			<if test="helpStatus != null"> help_status,</if>
+			<if test="masterConfig != null"> master_config,</if>
+			<if test="delFlag != null"> del_flag,</if>
+			<if test="createUser != null"> create_user,</if>
+			<if test="updateUser != null"> update_user,</if>
+			<if test="createTime != null"> create_time,</if>
+			<if test="updateTime != null"> update_time,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null"> #{id,jdbcType=BIGINT},</if>
+			<if test="cookbookId != null"> #{cookbookId,jdbcType=VARCHAR},</if>
+			<if test="creatorId != null"> #{creatorId,jdbcType=BIGINT},</if>
+			<if test="masterAvatar != null"> #{masterAvatar,jdbcType=VARCHAR},</if>
+			<if test="masterNickname != null"> #{masterNickname,jdbcType=VARCHAR},</if>
+			<if test="startTime != null"> #{startTime,jdbcType=TIMESTAMP},</if>
+			<if test="endTime != null"> #{endTime,jdbcType=TIMESTAMP},</if>
+			<if test="totalAmount != null"> #{totalAmount,jdbcType=INTEGER},</if>
+			<if test="helpAmount != null"> #{helpAmount,jdbcType=INTEGER},</if>
+			<if test="helpStatus != null"> #{helpStatus,jdbcType=INTEGER},</if>
+			<if test="masterConfig != null"> #{masterConfig,jdbcType=VARCHAR},</if>
+			<if test="delFlag != null"> #{delFlag,jdbcType=INTEGER},</if>
+			<if test="createUser != null"> #{createUser,jdbcType=VARCHAR},</if>
+			<if test="updateUser != null"> #{updateUser,jdbcType=VARCHAR},</if>
+			<if test="createTime != null"> #{createTime,jdbcType=TIMESTAMP},</if>
+			<if test="updateTime != null"> #{updateTime,jdbcType=TIMESTAMP},</if>
+		</trim>
+	</insert>
+
+	<!-- 根据主键修改输入的值-->
+	<update id="updateSocialMasterByIdSelective" parameterType="com.ruyuan.careerplan.social.domain.entity.SocialMasterDO">
+		UPDATE social_master
+		<set>
+			<if test="id != null"> id=#{id,jdbcType=BIGINT},</if>
+			<if test="cookbookId != null"> cookbook_id=#{cookbookId,jdbcType=VARCHAR},</if>
+			<if test="creatorId != null"> creator_id=#{creatorId,jdbcType=BIGINT},</if>
+			<if test="masterAvatar != null"> master_avatar=#{masterAvatar,jdbcType=VARCHAR},</if>
+			<if test="masterNickname != null"> master_nickname=#{masterNickname,jdbcType=VARCHAR},</if>
+			<if test="startTime != null"> start_time=#{startTime,jdbcType=TIMESTAMP},</if>
+			<if test="endTime != null"> end_time=#{endTime,jdbcType=TIMESTAMP},</if>
+			<if test="totalAmount != null"> total_amount=#{totalAmount,jdbcType=INTEGER},</if>
+			<if test="helpAmount != null"> help_amount=#{helpAmount,jdbcType=INTEGER},</if>
+			<if test="helpStatus != null"> help_status=#{helpStatus,jdbcType=INTEGER},</if>
+			<if test="masterConfig != null"> master_config=#{masterConfig,jdbcType=VARCHAR},</if>
+			<if test="delFlag != null"> del_flag=#{delFlag,jdbcType=INTEGER},</if>
+			<if test="createUser != null"> create_user=#{createUser,jdbcType=VARCHAR},</if>
+			<if test="updateUser != null"> update_user=#{updateUser,jdbcType=VARCHAR},</if>
+			<if test="createTime != null"> create_time=#{createTime,jdbcType=TIMESTAMP},</if>
+			<if test="updateTime != null"> update_time=#{updateTime,jdbcType=TIMESTAMP},</if>
+		</set>
+		WHERE cookbook_id=#{cookbookId,jdbcType=BIGINT}
+	</update>
+
+    <select id="selectSocialMasterByCookbookId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM social_master
+        WHERE cookbook_id = #{cookbookId,jdbcType=VARCHAR}
+    </select>
+
+
+</mapper>

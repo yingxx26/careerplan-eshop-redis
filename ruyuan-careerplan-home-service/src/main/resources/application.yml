@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: ruyuan-careerplan-cookbook
+  # 数据源配置
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    #    url: jdbc:mysql://47.102.157.169:3306/ruyuan-eshop-construction?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai
+    url: jdbc:mysql://localhost:3306/ruyuan?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+    username: root
+    password: root
+  cloud:
+    nacos:
+      discovery:
+        #server-addr: 47.102.157.169:8848
+        server-addr: localhost:8848
+        username: nacos
+        password: nacos
+
+  redis:
+    #    host: 47.102.157.169
+    host: localhost
+    port: 6379
+    password: 123456
+    timeout: 3000
+
+server:
+  port: 8015
+
+dubbo:
+  scan:
+    base-packages: com.ruyuan.careerplan.cookbook.api
+  registry:
+    address: spring-cloud://localhost
+  protocol:
+    name: dubbo
+    port: 28095
+  consumer:
+    check: false
+  provider:
+    threads: 800
+    actives: 200
+
+mybatis-plus:
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    map-underscore-to-camel-case: true
+  mapper-locations: classpath:mapper/*.xml
+  global-config:
+    db-config:
+      id-type: auto
+
+
+rocketmq:
+  name-server: localhost:9876

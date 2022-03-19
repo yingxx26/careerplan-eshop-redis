@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruyuan.careerplan.cookbook.mapper.CookbookMapper">
+
+    <resultMap id="cookbookResultMap" type="com.ruyuan.careerplan.cookbook.domain.dto.CookbookDTO">
+        <id column="ID" jdbcType="INTEGER" property="id" />
+        <result column="USER_ID" jdbcType="INTEGER" property="userId" />
+        <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+        <result column="PROFILE" jdbcType="VARCHAR" property="profile" />
+        <result column="COOKBOOK_NAME" jdbcType="VARCHAR" property="cookbookName" />
+        <result column="COOKBOOK_TYPE" jdbcType="TINYINT" property="cookbookType" />
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+        <result column="CATEGORY_TAG" jdbcType="TINYINT" property="categoryTag" />
+        <result column="MAIN_URL" jdbcType="VARCHAR" property="mainUrl" />
+        <result column="VIDEO_URL" jdbcType="VARCHAR" property="videoUrl" />
+        <result column="COOKING_TIME" jdbcType="TINYINT" property="cookingTime" />
+        <result column="DIFFICULTY" jdbcType="TINYINT" property="difficulty" />
+        <result column="COOKBOOK_DETAIL" jdbcType="VARCHAR" property="cookbookDetail"
+                javaType="com.ruyuan.careerplan.cookbook.domain.dto.StepDetail"
+                typeHandler="com.ruyuan.careerplan.cookbook.typehandler.ArrayListTypeHandler" />
+        <result column="FOODS" jdbcType="VARCHAR" property="foods"
+                javaType="com.ruyuan.careerplan.cookbook.domain.dto.Food"
+                typeHandler="com.ruyuan.careerplan.cookbook.typehandler.ArrayListTypeHandler" />
+        <result column="TIPS" jdbcType="VARCHAR" property="tips" />
+        <result column="COOKBOOK_STATUS" jdbcType="TINYINT" property="cookbookStatus" />
+        <collection property="skuIds" ofType="java.lang.Long" >
+            <result column="SKU_ID" jdbcType="INTEGER" />
+        </collection>
+    </resultMap>
+
+    <resultMap id="homeViewCookbookResultMap" type="com.ruyuan.careerplan.cookbook.domain.dto.CookbookDTO">
+        <id column="ID" jdbcType="INTEGER" property="id" />
+        <result column="USER_ID" jdbcType="INTEGER" property="userId" />
+        <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+        <result column="PROFILE" jdbcType="VARCHAR" property="profile" />
+        <result column="COOKBOOK_NAME" jdbcType="VARCHAR" property="cookbookName" />
+        <result column="CATEGORY_TAG" jdbcType="TINYINT" property="categoryTag" />
+        <result column="MAIN_URL" jdbcType="VARCHAR" property="mainUrl" />
+        <result column="DESCRIPTION" jdbcType="VARCHAR" property="description" />
+    </resultMap>
+
+    <sql id="cookbookResultColumn">
+        c.ID, c.USER_ID, c.COOKBOOK_NAME, c.COOKBOOK_TYPE, c.DESCRIPTION, c.CATEGORY_TAG,
+        c.MAIN_URL, c.VIDEO_URL, c.COOKING_TIME, c.DIFFICULTY, c.COOKBOOK_DETAIL, c.FOODS,
+        c.TIPS, c.COOKBOOK_STATUS, cu.USER_NAME, csr.SKU_ID
+    </sql>
+
+    <sql id="homeViewCookbookResultColumn">
+        c.ID, c.USER_ID, c.COOKBOOK_NAME, c.CATEGORY_TAG, c.MAIN_URL, c.DESCRIPTION, cu.USER_NAME, cu.PROFILE
+    </sql>
+    
+    <select id="listByUserId" resultMap="cookbookResultMap">
+        select
+            <include refid="cookbookResultColumn"></include>
+        from cookbook c left join cookbook_user cu on c.user_id = cu.id
+        left join cookbook_sku_relation csr on c.id = csr.cookbook_id
+        where c.user_id = #{userId} order by c.id desc
+    </select>
+
+    <select id="getCookbookInfoById" resultMap="cookbookResultMap">
+        select
+            <include refid="cookbookResultColumn"></include>
+        from cookbook c left join cookbook_user cu on c.user_id = cu.id
+        left join cookbook_sku_relation csr on c.id = csr.cookbook_id
+        where c.id = #{cookbookId} order by c.id desc
+    </select>
+
+    <select id="pageByUserId" resultMap="cookbookResultMap">
+        select
+            <include refid="cookbookResultColumn"></include>
+        from cookbook c left join cookbook_user cu on c.user_id = cu.id
+        where c.user_id = #{userId} order by c.id desc
+        limit #{start}, #{size}
+    </select>
+
+    <select id="pageByCookbookStatus" resultMap="homeViewCookbookResultMap">
+        select
+        <include refid="homeViewCookbookResultColumn"></include>
+        from cookbook c left join cookbook_user cu on c.user_id = cu.id
+        where c.cookbook_status = #{cookbookStatus} order by c.id desc
+        limit #{start}, #{size}
+    </select>
+
+</mapper>

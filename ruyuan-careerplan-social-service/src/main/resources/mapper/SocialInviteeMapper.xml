@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ruyuan.careerplan.social.mapper.SocialInviteeMapper">
+
+	<!--通用应用节运行时数据表映射-->
+	<resultMap id="BaseResultMap" type="com.ruyuan.careerplan.social.domain.entity.SocialInviteeDO" >
+		<id property="id" column="id" jdbcType="BIGINT" />
+		<result property="cookbookId" column="cookbook_id" jdbcType="VARCHAR" />
+		<result property="inviteeId" column="invitee_id" jdbcType="BIGINT" />
+		<result property="inviteeNickName" column="invitee_nick_name" jdbcType="VARCHAR" />
+		<result property="inviteeAvatar" column="invitee_avatar" jdbcType="VARCHAR" />
+		<result property="helpAmount" column="help_amount" jdbcType="INTEGER" />
+		<result property="helpConfig" column="help_config" jdbcType="VARCHAR" />
+		<result property="delFlag" column="del_flag" jdbcType="INTEGER" />
+		<result property="createUser" column="create_user" jdbcType="VARCHAR" />
+		<result property="updateUser" column="update_user" jdbcType="VARCHAR" />
+		<result property="createTime" column="create_time" jdbcType="TIMESTAMP" />
+		<result property="updateTime" column="update_time" jdbcType="TIMESTAMP" />
+	</resultMap>
+
+	<!-- 通用查询结果集合-->
+	<sql id="Base_Column_List">
+		id,cookbook_id,invitee_id,invitee_nick_name,invitee_avatar,help_amount,help_config,del_flag,create_user,update_user,create_time,update_time
+	</sql>
+
+
+	<sql id="conditions">
+		<if test="id != null"> and id =#{id,jdbcType=BIGINT}</if>
+		<if test="cookbookId != null and cookbookId != ''"> and cookbook_id =#{cookbookId,jdbcType=VARCHAR}</if>
+		<if test="inviteeId != null"> and invitee_id =#{inviteeId,jdbcType=BIGINT}</if>
+		<if test="inviteeNickName != null and inviteeNickName != ''"> and invitee_nick_name =#{inviteeNickName,jdbcType=VARCHAR}</if>
+		<if test="inviteeAvatar != null and inviteeAvatar != ''"> and invitee_avatar =#{inviteeAvatar,jdbcType=VARCHAR}</if>
+		<if test="helpAmount != null"> and help_amount =#{helpAmount,jdbcType=INTEGER}</if>
+		<if test="helpConfig != null and helpConfig != ''"> and help_config =#{helpConfig,jdbcType=VARCHAR}</if>
+		<if test="delFlag != null"> and del_flag =#{delFlag,jdbcType=INTEGER}</if>
+		<if test="createUser != null and createUser != ''"> and create_user =#{createUser,jdbcType=VARCHAR}</if>
+		<if test="updateUser != null and updateUser != ''"> and update_user =#{updateUser,jdbcType=VARCHAR}</if>
+		<if test="createTime != null and createTime != ''"> and create_time =#{createTime,jdbcType=TIMESTAMP}</if>
+		<if test="updateTime != null and updateTime != ''"> and update_time =#{updateTime,jdbcType=TIMESTAMP}</if>
+		<if test="delFlag == null"> and del_flag=1</if>
+	</sql>
+
+	<!-- 查询 -->
+	<select id="selectSocialInviteeByCondition" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM social_invitee
+		<where>
+			<include refid="conditions" />
+		</where>
+
+	</select>
+
+	<!-- 添加 -->
+	<insert id="insertSocialInvitee" useGeneratedKeys="true" keyProperty="id" parameterType="com.ruyuan.careerplan.social.domain.entity.SocialInviteeDO">
+		INSERT INTO social_invitee
+		<trim prefix="(" suffix=")" suffixOverrides="," >
+			<if test="id != null"> id,</if>
+			<if test="cookbookId != null"> cookbook_id,</if>
+			<if test="inviteeId != null"> invitee_id,</if>
+			<if test="inviteeNickName != null"> invitee_nick_name,</if>
+			<if test="inviteeAvatar != null"> invitee_avatar,</if>
+			<if test="helpAmount != null"> help_amount,</if>
+			<if test="helpConfig != null"> help_config,</if>
+			<if test="delFlag != null"> del_flag,</if>
+			<if test="createUser != null"> create_user,</if>
+			<if test="updateUser != null"> update_user,</if>
+			<if test="createTime != null"> create_time,</if>
+			<if test="updateTime != null"> update_time,</if>
+		</trim>
+		<trim prefix="values (" suffix=")" suffixOverrides="," >
+			<if test="id != null"> #{id,jdbcType=BIGINT},</if>
+			<if test="cookbookId != null"> #{cookbookId,jdbcType=VARCHAR},</if>
+			<if test="inviteeId != null"> #{inviteeId,jdbcType=BIGINT},</if>
+			<if test="inviteeNickName != null"> #{inviteeNickName,jdbcType=VARCHAR},</if>
+			<if test="inviteeAvatar != null"> #{inviteeAvatar,jdbcType=VARCHAR},</if>
+			<if test="helpAmount != null"> #{helpAmount,jdbcType=INTEGER},</if>
+			<if test="helpConfig != null"> #{helpConfig,jdbcType=VARCHAR},</if>
+			<if test="delFlag != null"> #{delFlag,jdbcType=INTEGER},</if>
+			<if test="createUser != null"> #{createUser,jdbcType=VARCHAR},</if>
+			<if test="updateUser != null"> #{updateUser,jdbcType=VARCHAR},</if>
+			<if test="createTime != null"> #{createTime,jdbcType=TIMESTAMP},</if>
+			<if test="updateTime != null"> #{updateTime,jdbcType=TIMESTAMP},</if>
+		</trim>
+	</insert>
+
+	<!-- 按条件查询列表 -->
+	<select id="selectSocialInviteeList" resultMap="BaseResultMap" parameterType="java.util.HashMap">
+		SELECT
+		<include refid="Base_Column_List" />
+		FROM social_invitee
+		<where>
+			<include refid="conditions" />
+		</where>
+	</select>
+
+	<!-- 按菜谱号、助力ID删除助力信息 -->
+	<update id="deleteFailInvitee" parameterType="com.ruyuan.careerplan.social.domain.entity.SocialInviteeDO">
+		UPDATE social_invitee
+		SET del_flag=1
+		WHERE cookbook_id=#{cookbookId} AND invitee_id=#{inviteeId}
+	</update>
+
+</mapper>
